@@ -127,3 +127,24 @@ int Print_NT_Header_Optional_DataDirectory (PIMAGE_OPTIONAL_HEADER64 lp_header, 
 	puts("\n");
 	return 0;
 }
+
+int Print_Section_Header (PIMAGE_SECTION_HEADER lp_header, int lp_amount) {
+	puts("[IMAGE_SECTION_HEADER]");
+	for (int i = 0; i < lp_amount; i++) {
+		Print_Section_Header_Name(lp_header + i);
+		Print_Section_Header_Component(lp_header + i, Misc.VirtualSize);
+		Print_Section_Header_Component(lp_header + i, VirtualAddress);
+		Print_Section_Header_Component(lp_header + i, SizeOfRawData);
+		Print_Section_Header_Component(lp_header + i, PointerToRawData);
+		Print_Section_Header_Component(lp_header + i, PointerToRelocations);
+		Print_Section_Header_Component(lp_header + i, PointerToLinenumbers);
+		Print_Section_Header_Component(lp_header + i, NumberOfRelocations);
+		Print_Section_Header_Component(lp_header + i, NumberOfLinenumbers);
+		Print_Section_Header_Component(lp_header + i, Characteristics);
+		
+		puts("");
+	}
+	
+	puts("\n");
+	return 0;
+}

@@ -42,6 +42,9 @@ int wmain (int argc, wchar_t* argv[]) {
 	DWORD lv_nt_signature;
 	IMAGE_FILE_HEADER lv_file_header;
 	IMAGE_OPTIONAL_HEADER64 lv_optional_header;
+	int lv_pe_header_end;
+	PIMAGE_SECTION_HEADER lv_section_header;
+	int lv_section_amount;
 	
 	setlocale(LC_ALL, "");
 
@@ -58,7 +61,8 @@ int wmain (int argc, wchar_t* argv[]) {
 	Read_DOS_Stub(lv_file, &lv_dos_header, &lv_dos_stub);
 	Read_NT_Header_Signature(lv_file, &lv_dos_header, &lv_nt_signature);
 	Read_NT_Header_File(lv_file, &lv_dos_header, &lv_file_header);
-	Read_NT_Header_Optional(lv_file, &lv_dos_header, &lv_optional_header, _32BitCheck(lv_file_header));
+	Read_NT_Header_Optional(lv_file, &lv_dos_header, &lv_optional_header, _32BitCheck(lv_file_header), &lv_pe_header_end);
+	Read_Section_Header(lv_file, &lv_file_header, &lv_section_header, lv_pe_header_end, &lv_section_amount);
 	
 	Print_DOS_Header(&lv_dos_header);
 	Print_DOS_Stub(&lv_dos_stub);
@@ -66,10 +70,12 @@ int wmain (int argc, wchar_t* argv[]) {
 	Print_NT_Header_File(&lv_file_header);
 	Print_NT_Header_Optional(&lv_optional_header, _32BitCheck(lv_file_header));
 	Print_NT_Header_Optional_DataDirectory(&lv_optional_header, _32BitCheck(lv_file_header));
+	Print_Section_Header(lv_section_header, lv_section_amount);
 	
 	END:
 	fclose(lv_file);
 	free(lv_dos_stub.String);
+	free(lv_section_header);
 	system("pause");
 	
 	return 0;

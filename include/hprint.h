@@ -21,4 +21,8 @@
 		PIMAGE_OPTIONAL_HEADER64, //Pointer of Header (_In)
 		bool //true: 32-bit, false: 64-bit (_In) 
 	);
+	int Print_Section_Header (
+		PIMAGE_SECTION_HEADER, //Pointer of Header (_In)
+		int //Header Amount (_In)
+	);
 #endif

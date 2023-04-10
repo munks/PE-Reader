@@ -24,6 +24,14 @@
 		FILE*, //Executable File (_In)
 		PIMAGE_DOS_HEADER, //Information for NT Header Offset (_In)
 		PIMAGE_OPTIONAL_HEADER64, //Pointer of Header (_Out)
-		bool //true: 32-bit, false: 64-bit (_In) 
+		bool, //true: 32-bit, false: 64-bit (_In)
+		int* //Get Last File Pointer (_Out) 
+	);
+	int Read_Section_Header(
+		FILE*, //Executable File (_In)
+		PIMAGE_FILE_HEADER, //Information for Section Amount (_In)
+		PIMAGE_SECTION_HEADER*, //Pointer of Header (_Out)
+		int, //Section Header Offset (_In)
+		int* //Section Amount (_Out)
 	);
 #endif

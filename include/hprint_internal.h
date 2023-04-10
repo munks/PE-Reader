@@ -12,10 +12,12 @@
 															__VA_ARGS__(h->s); puts("")
 	#define Print_NT_Header_Optional_Internal(h, s, b, ...)	printf("IMAGE_OPTIONAL_HEADER%d.%s: 0x%02X", b ? 32 : 64, #s, b ? ((PIMAGE_OPTIONAL_HEADER32)h)->s : h->s); \
 															__VA_ARGS__(b ? ((PIMAGE_OPTIONAL_HEADER32)h)->s : h->s); puts("")
-	#define Print_NT_Header_Optional_DataDirectory_Internal(h, s, b)	printf("DataDirectory[%s]:\n -VirtualAddress: 0x%02X\n -Size: 0x%02X\n", \
+	#define Print_NT_Header_Optional_DataDirectory_Internal(h, s, b)	printf("DataDirectory[%s]:\n -VirtualAddress: 0x%02X\n -Size: 0x%02X\n\n", \
 																			#s, \
 																			b ? ((PIMAGE_OPTIONAL_HEADER32)h)->DataDirectory[s].VirtualAddress : h->DataDirectory[s].VirtualAddress, \
 																			b ? ((PIMAGE_OPTIONAL_HEADER32)h)->DataDirectory[s].Size : h->DataDirectory[s].Size);
+	#define Print_Section_Header_Name(p)	printf("Section["); for (int t = 0; t < 8; t++) { printf("%c", (p)->Name[t]); } puts("]:");
+	#define Print_Section_Header_Component(p, s, ...)	printf(" -%s: 0x%02X", #s, (p)->s); __VA_ARGS__((p)->s); puts("");
 	
 	#define Print_Machine_Internal(m) case m: { printf(" (%s)", #m); break; }
 	#define Print_Characteristics_Internal(c, v, i)	if (c & v) { \
