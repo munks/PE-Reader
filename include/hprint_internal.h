@@ -40,6 +40,7 @@
 																}
 	//Function
 	void Print_Magic (WORD);
+	void Print_DOS_Stub_Internal (char*, int);
 	void Print_Machine (WORD);
 	void Print_DateStamp (DWORD);
 	void Print_Characteristics (WORD);

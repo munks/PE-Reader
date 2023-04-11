@@ -4,6 +4,33 @@ void Print_Magic (WORD lp_magic) {
 	printf(" (%c%c)", (BYTE)lp_magic, (BYTE)(lp_magic >> 8));
 }
 
+void Print_DOS_Stub_Internal (char* lp_str, int lp_count) {
+	unsigned char lv_tmp;
+	
+	puts("");
+	for (int i = 0; i < lp_count; i++) {
+		lv_tmp = (unsigned char)lp_str[i];
+		if (lv_tmp <= 0x1F || lv_tmp >= 0x7F) {
+			SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 0b0100);
+			printf("\\%02X ", lv_tmp);
+			SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 0b0111);
+		} else {
+			printf("%-4c", lv_tmp);
+		}
+	}
+	
+	printf(" | ");
+	
+	for (int i = 0; i < lp_count; i++) {
+		lv_tmp = (unsigned char)lp_str[i];
+		if (lv_tmp <= 0x1F || lv_tmp >= 0x7F) {
+			SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 0b0100);
+		}
+		printf("%02X ", lv_tmp);
+		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 0b0111);
+	}
+}
+
 void Print_Machine (WORD lp_machine) {
 	switch (lp_machine) {
 		Print_Machine_Internal(IMAGE_FILE_MACHINE_UNKNOWN);
@@ -41,9 +68,10 @@ void Print_Machine (WORD lp_machine) {
 }
 
 void Print_DateStamp (DWORD lp_date) {
+	__time64_t lv_tmpdate = (__time64_t)lp_date;
 	struct tm *lv_time;
 	
-	lv_time = _localtime32((const __time32_t*)&lp_date);
+	lv_time = _localtime64(&lv_tmpdate);
 	printf (" (%04d/%02d/%02d %02d:%02d:%02d)",
 		lv_time->tm_year + 1900,
 		lv_time->tm_mon + 1,

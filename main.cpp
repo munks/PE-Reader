@@ -35,6 +35,18 @@ int FileOpen (wchar_t* lp_fileDir, FILE** lp_output) {
 	return 0;
 }
 
+void CaptionChange (wchar_t* lp_name, wchar_t* lp_path) {
+	int lv_length;
+	wchar_t* lv_tmpstr;
+	
+	lv_length = wcslen(lp_name) + wcslen(lp_path);
+	lv_tmpstr = (wchar_t*)calloc(1, sizeof(wchar_t) * (lv_length + 20));
+	swprintf(lv_tmpstr, L"%s - File: %s", lp_name, lp_path);
+	
+	SetConsoleTitleW(lv_tmpstr);
+	free(lv_tmpstr);
+}
+
 int wmain (int argc, wchar_t* argv[]) {
 	FILE *lv_file = NULL;
 	IMAGE_DOS_HEADER lv_dos_header;
@@ -56,7 +68,9 @@ int wmain (int argc, wchar_t* argv[]) {
 	if (FileOpen(argv[1], &lv_file)) {
 		goto END;
 	}
-
+	
+	CaptionChange(wcsrchr(argv[0], L'\\') + 1, argv[1]);
+	
 	Read_DOS_Header(lv_file, &lv_dos_header);
 	Read_DOS_Stub(lv_file, &lv_dos_header, &lv_dos_stub);
 	Read_NT_Header_Signature(lv_file, &lv_dos_header, &lv_nt_signature);

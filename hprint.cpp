@@ -38,9 +38,19 @@ int Print_DOS_Header (PIMAGE_DOS_HEADER lp_header) {
 }
 
 int Print_DOS_Stub (PDOS_STUB lp_stub) {
-	puts("[DOS Stub]");
+	char lv_temp[8];
+	int lv_count = 0;
+	
+	printf("[DOS Stub]");
 	for (int i = 0; i < (lp_stub->Length); i++) {
-		printf("%c", (lp_stub->String)[i]);
+		lv_temp[lv_count++] = (lp_stub->String)[i];
+		if (lv_count == 8) {
+			Print_DOS_Stub_Internal(lv_temp, lv_count);
+			lv_count = 0;
+		}
+	}
+	if (lv_count != 0) {
+		Print_DOS_Stub_Internal(lv_temp, lv_count);
 	}
 	
 	puts("\n\n");
