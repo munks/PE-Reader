@@ -57,6 +57,7 @@ void Print_DateStamp (DWORD lp_date) {
 void Print_Characteristics (WORD lp_character) {
 	int lv_counter = 0;
 	
+	if (lp_character == 0x00) { return; }
 	printf("\n - ");
 	Print_Characteristics_Internal(lp_character, IMAGE_FILE_RELOCS_STRIPPED, lv_counter);
 	Print_Characteristics_Internal(lp_character, IMAGE_FILE_EXECUTABLE_IMAGE, lv_counter);
@@ -104,6 +105,7 @@ void Print_Subsystem (WORD lp_subsystem) {
 void Print_DllCharacteristics (WORD lp_character) {
 	int lv_counter = 0;
 	
+	if (lp_character == 0x00) { return; }
 	printf("\n - ");
 	Print_DllCharacteristics_Internal(lp_character, IMAGE_DLLCHARACTERISTICS_HIGH_ENTROPY_VA, lv_counter);
 	Print_DllCharacteristics_Internal(lp_character, IMAGE_DLLCHARACTERISTICS_DYNAMIC_BASE, lv_counter);
@@ -116,4 +118,48 @@ void Print_DllCharacteristics (WORD lp_character) {
 	Print_DllCharacteristics_Internal(lp_character, IMAGE_DLLCHARACTERISTICS_WDM_DRIVER, lv_counter);
 	Print_DllCharacteristics_Internal(lp_character, IMAGE_DLLCHARACTERISTICS_GUARD_CF, lv_counter);
 	Print_DllCharacteristics_Internal(lp_character, IMAGE_DLLCHARACTERISTICS_TERMINAL_SERVER_AWARE, lv_counter);
+}
+
+void Print_Characteristics_Section (DWORD lp_character) {
+	int lv_counter = 0;
+	
+	if (lp_character == 0x0000) { return; }
+	printf(":\n  -");
+	Print_Characteristics_Section_Internal(lp_character, IMAGE_SCN_TYPE_NO_PAD, lv_counter);
+	Print_Characteristics_Section_Internal(lp_character, IMAGE_SCN_CNT_CODE, lv_counter);
+	Print_Characteristics_Section_Internal(lp_character, IMAGE_SCN_CNT_INITIALIZED_DATA, lv_counter);
+	Print_Characteristics_Section_Internal(lp_character, IMAGE_SCN_CNT_UNINITIALIZED_DATA, lv_counter);
+	Print_Characteristics_Section_Internal(lp_character, IMAGE_SCN_LNK_OTHER, lv_counter);
+	Print_Characteristics_Section_Internal(lp_character, IMAGE_SCN_LNK_INFO, lv_counter);
+	Print_Characteristics_Section_Internal(lp_character, IMAGE_SCN_LNK_REMOVE, lv_counter);
+	Print_Characteristics_Section_Internal(lp_character, IMAGE_SCN_LNK_COMDAT, lv_counter);
+	Print_Characteristics_Section_Internal(lp_character, IMAGE_SCN_NO_DEFER_SPEC_EXC, lv_counter);
+	Print_Characteristics_Section_Internal(lp_character, IMAGE_SCN_GPREL, lv_counter);
+	Print_Characteristics_Section_Internal(lp_character, IMAGE_SCN_MEM_PURGEABLE, lv_counter);
+	Print_Characteristics_Section_Internal(lp_character, IMAGE_SCN_MEM_LOCKED, lv_counter);
+	Print_Characteristics_Section_Internal(lp_character, IMAGE_SCN_MEM_PRELOAD, lv_counter);
+	
+	Print_Characteristics_Section_Internal_Bit(lp_character, IMAGE_SCN_ALIGN_1BYTES, lv_counter);
+	Print_Characteristics_Section_Internal_Bit(lp_character, IMAGE_SCN_ALIGN_2BYTES, lv_counter);
+	Print_Characteristics_Section_Internal_Bit(lp_character, IMAGE_SCN_ALIGN_4BYTES, lv_counter);
+	Print_Characteristics_Section_Internal_Bit(lp_character, IMAGE_SCN_ALIGN_8BYTES, lv_counter);
+	Print_Characteristics_Section_Internal_Bit(lp_character, IMAGE_SCN_ALIGN_16BYTES, lv_counter);
+	Print_Characteristics_Section_Internal_Bit(lp_character, IMAGE_SCN_ALIGN_32BYTES, lv_counter);
+	Print_Characteristics_Section_Internal_Bit(lp_character, IMAGE_SCN_ALIGN_64BYTES, lv_counter);
+	Print_Characteristics_Section_Internal_Bit(lp_character, IMAGE_SCN_ALIGN_128BYTES, lv_counter);
+	Print_Characteristics_Section_Internal_Bit(lp_character, IMAGE_SCN_ALIGN_256BYTES, lv_counter);
+	Print_Characteristics_Section_Internal_Bit(lp_character, IMAGE_SCN_ALIGN_512BYTES, lv_counter);
+	Print_Characteristics_Section_Internal_Bit(lp_character, IMAGE_SCN_ALIGN_1024BYTES, lv_counter);
+	Print_Characteristics_Section_Internal_Bit(lp_character, IMAGE_SCN_ALIGN_2048BYTES, lv_counter);
+	Print_Characteristics_Section_Internal_Bit(lp_character, IMAGE_SCN_ALIGN_4096BYTES, lv_counter);
+	Print_Characteristics_Section_Internal_Bit(lp_character, IMAGE_SCN_ALIGN_8192BYTES, lv_counter);
+	
+	Print_Characteristics_Section_Internal(lp_character, IMAGE_SCN_LNK_NRELOC_OVFL, lv_counter);
+	Print_Characteristics_Section_Internal(lp_character, IMAGE_SCN_MEM_DISCARDABLE, lv_counter);
+	Print_Characteristics_Section_Internal(lp_character, IMAGE_SCN_MEM_NOT_CACHED, lv_counter);
+	Print_Characteristics_Section_Internal(lp_character, IMAGE_SCN_MEM_NOT_PAGED, lv_counter);
+	Print_Characteristics_Section_Internal(lp_character, IMAGE_SCN_MEM_SHARED, lv_counter);
+	Print_Characteristics_Section_Internal(lp_character, IMAGE_SCN_MEM_EXECUTE, lv_counter);
+	Print_Characteristics_Section_Internal(lp_character, IMAGE_SCN_MEM_READ, lv_counter);
+	Print_Characteristics_Section_Internal(lp_character, IMAGE_SCN_MEM_WRITE, lv_counter);
 }

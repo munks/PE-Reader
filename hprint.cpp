@@ -140,7 +140,7 @@ int Print_Section_Header (PIMAGE_SECTION_HEADER lp_header, int lp_amount) {
 		Print_Section_Header_Component(lp_header + i, PointerToLinenumbers);
 		Print_Section_Header_Component(lp_header + i, NumberOfRelocations);
 		Print_Section_Header_Component(lp_header + i, NumberOfLinenumbers);
-		Print_Section_Header_Component(lp_header + i, Characteristics);
+		Print_Section_Header_Component(lp_header + i, Characteristics, Print_Characteristics_Section);
 		
 		puts("");
 	}

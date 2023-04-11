@@ -30,6 +30,14 @@
 															if (i == 2) { printf("\n   "); i = 0; } \
 															printf("%s%s", i ? " | " : "", #v); i++; \
 														}
+	#define Print_Characteristics_Section_Internal(c, v, i)	if (c & v) { \
+																if (i == 2) { printf("\n   "); i = 0; } \
+																printf("%s%s", i ? " | " : "", #v); i++; \
+															}
+	#define Print_Characteristics_Section_Internal_Bit(c, v, i)	if ((c & 0x00F00000) == v) { \
+																	if (i == 2) { printf("\n   "); i = 0; } \
+																	printf("%s%s", i ? " | " : "", #v); i++; \
+																}
 	//Function
 	void Print_Magic (WORD);
 	void Print_Machine (WORD);
@@ -38,4 +46,5 @@
 	void Print_Magic_Optional (WORD);
 	void Print_Subsystem (WORD);
 	void Print_DllCharacteristics (WORD);
+	void Print_Characteristics_Section (DWORD);
 #endif
