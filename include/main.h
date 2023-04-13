@@ -1,6 +1,8 @@
 #ifndef _main
 	#define _main
 	
+	#define ge(b) if (b) { goto END; }
+	
 	int FileOpen (
 		wchar_t*, //File Path (_In)
 		FILE** //File Pointer (_Out)

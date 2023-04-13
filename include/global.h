@@ -17,6 +17,7 @@
 	//Custom Include
 	#include "main.h"
 	#include "hread.h"
+	#include "hread_internal.h"
 	#include "hprint.h"
 	#include "hprint_internal.h"
 	

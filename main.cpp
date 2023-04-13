@@ -24,7 +24,7 @@ int FileOpen (wchar_t* lp_fileDir, FILE** lp_output) {
 	
 	//Check Format (Header Character)
 	fread(&lv_pe, sizeof(WORD), 1, lv_file);
-	if (lv_pe != 0x5A4D) {
+	if (lv_pe != IMAGE_DOS_SIGNATURE) {
 		puts("File is not PE Format.");
 		fclose(lv_file);
 		return 1;
@@ -65,26 +65,24 @@ int wmain (int argc, wchar_t* argv[]) {
 		goto END;
 	}
 	
-	if (FileOpen(argv[1], &lv_file)) {
-		goto END;
-	}
+	ge(FileOpen(argv[1], &lv_file));
 	
 	CaptionChange(wcsrchr(argv[0], L'\\') + 1, argv[1]);
 	
-	Read_DOS_Header(lv_file, &lv_dos_header);
-	Read_DOS_Stub(lv_file, &lv_dos_header, &lv_dos_stub);
-	Read_NT_Header_Signature(lv_file, &lv_dos_header, &lv_nt_signature);
-	Read_NT_Header_File(lv_file, &lv_dos_header, &lv_file_header);
-	Read_NT_Header_Optional(lv_file, &lv_dos_header, &lv_optional_header, _32BitCheck(lv_file_header), &lv_pe_header_end);
-	Read_Section_Header(lv_file, &lv_file_header, &lv_section_header, lv_pe_header_end, &lv_section_amount);
+	ge(Read_DOS_Header(lv_file, &lv_dos_header));
+	ge(Read_DOS_Stub(lv_file, &lv_dos_header, &lv_dos_stub));
+	ge(Read_NT_Header_Signature(lv_file, &lv_dos_header, &lv_nt_signature));
+	ge(Read_NT_Header_File(lv_file, &lv_dos_header, &lv_file_header));
+	ge(Read_NT_Header_Optional(lv_file, &lv_dos_header, &lv_optional_header, _32BitCheck(lv_file_header), &lv_pe_header_end));
+	ge(Read_Section_Header(lv_file, &lv_file_header, &lv_section_header, lv_pe_header_end, &lv_section_amount));
 	
-	Print_DOS_Header(&lv_dos_header);
-	Print_DOS_Stub(&lv_dos_stub);
-	Print_NT_Header_Signature(lv_nt_signature);
-	Print_NT_Header_File(&lv_file_header);
-	Print_NT_Header_Optional(&lv_optional_header, _32BitCheck(lv_file_header));
-	Print_NT_Header_Optional_DataDirectory(&lv_optional_header, _32BitCheck(lv_file_header));
-	Print_Section_Header(lv_section_header, lv_section_amount);
+	ge(Print_DOS_Header(&lv_dos_header));
+	ge(Print_DOS_Stub(&lv_dos_stub));
+	ge(Print_NT_Header_Signature(lv_nt_signature));
+	ge(Print_NT_Header_File(&lv_file_header));
+	ge(Print_NT_Header_Optional(&lv_optional_header, _32BitCheck(lv_file_header)));
+	ge(Print_NT_Header_Optional_DataDirectory(&lv_optional_header, _32BitCheck(lv_file_header)));
+	ge(Print_Section_Header(lv_section_header, lv_section_amount));
 	
 	END:
 	fclose(lv_file);
