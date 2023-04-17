@@ -13,6 +13,21 @@
 		char* String = NULL;
 		int Length;
 	} DOS_STUB, *PDOS_STUB;
+
+	typedef struct _HEADER_SET {
+		IMAGE_DOS_HEADER dos_header;
+		DOS_STUB dos_stub;
+		
+		union { //The size of the Signature and FileHeader is the same whether 32 bits or 64 bits.
+			IMAGE_NT_HEADERS32 nt_header32;
+			IMAGE_NT_HEADERS64 nt_header64;
+		};
+		
+		int pe_header_end;
+		
+		PIMAGE_SECTION_HEADER section_header = NULL;
+		int section_amount;
+	} HEADER_SET, *PHEADER_SET;
 	
 	//Custom Include
 	#include "main.h"

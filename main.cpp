@@ -1,5 +1,26 @@
 #include "global.h"
 
+int Header_Read (FILE *lp_file, PHEADER_SET lp_set) {
+	CheckNE0(Read_DOS_Header(lp_file, lp_set));
+	CheckNE0(Read_DOS_Stub(lp_file, lp_set));
+	CheckNE0(Read_NT_Header(lp_file, lp_set));
+	CheckNE0(Read_Section_Header(lp_file, lp_set));
+
+	return 0;
+}
+
+int Header_Print (PHEADER_SET lp_set) {
+	CheckNE0(Print_DOS_Header(lp_set));
+	CheckNE0(Print_DOS_Stub(lp_set));
+	CheckNE0(Print_NT_Header_Signature(lp_set));
+	CheckNE0(Print_NT_Header_File(lp_set));
+	CheckNE0(Print_NT_Header_Optional(lp_set));
+	CheckNE0(Print_NT_Header_Optional_DataDirectory(lp_set));
+	CheckNE0(Print_Section_Header(lp_set));
+
+	return 0;
+}
+
 int FileOpen (wchar_t* lp_fileDir, FILE** lp_output) {
 	FILE* lv_file;
 	WORD lv_pe;
@@ -17,10 +38,11 @@ int FileOpen (wchar_t* lp_fileDir, FILE** lp_output) {
 	
 	//Check Format (File Name)
 	if (wcsstr(lp_fileDir, L".exe") == NULL) {
+	if (wcsstr(lp_fileDir, L".dll") == NULL) {
 		puts("File is not PE Format.");
 		fclose(lv_file);
 		return 1;
-	}
+	}}
 	
 	//Check Format (Header Character)
 	fread(&lv_pe, sizeof(WORD), 1, lv_file);
@@ -49,14 +71,7 @@ void CaptionChange (wchar_t* lp_name, wchar_t* lp_path) {
 
 int wmain (int argc, wchar_t* argv[]) {
 	FILE *lv_file = NULL;
-	IMAGE_DOS_HEADER lv_dos_header;
-	DOS_STUB lv_dos_stub;
-	DWORD lv_nt_signature;
-	IMAGE_FILE_HEADER lv_file_header;
-	IMAGE_OPTIONAL_HEADER64 lv_optional_header;
-	int lv_pe_header_end;
-	PIMAGE_SECTION_HEADER lv_section_header;
-	int lv_section_amount;
+	HEADER_SET lv_header_info;
 	
 	setlocale(LC_ALL, "");
 
@@ -65,29 +80,20 @@ int wmain (int argc, wchar_t* argv[]) {
 		goto END;
 	}
 	
-	ge(FileOpen(argv[1], &lv_file));
+	if (!FileOpen(argv[1], &lv_file)) {
+		CaptionChange(wcsrchr(argv[0], L'\\') + 1, argv[1]);
+	} else {
+		goto END;
+	}
 	
-	CaptionChange(wcsrchr(argv[0], L'\\') + 1, argv[1]);
-	
-	ge(Read_DOS_Header(lv_file, &lv_dos_header));
-	ge(Read_DOS_Stub(lv_file, &lv_dos_header, &lv_dos_stub));
-	ge(Read_NT_Header_Signature(lv_file, &lv_dos_header, &lv_nt_signature));
-	ge(Read_NT_Header_File(lv_file, &lv_dos_header, &lv_file_header));
-	ge(Read_NT_Header_Optional(lv_file, &lv_dos_header, &lv_optional_header, _32BitCheck(lv_file_header), &lv_pe_header_end));
-	ge(Read_Section_Header(lv_file, &lv_file_header, &lv_section_header, lv_pe_header_end, &lv_section_amount));
-	
-	ge(Print_DOS_Header(&lv_dos_header));
-	ge(Print_DOS_Stub(&lv_dos_stub));
-	ge(Print_NT_Header_Signature(lv_nt_signature));
-	ge(Print_NT_Header_File(&lv_file_header));
-	ge(Print_NT_Header_Optional(&lv_optional_header, _32BitCheck(lv_file_header)));
-	ge(Print_NT_Header_Optional_DataDirectory(&lv_optional_header, _32BitCheck(lv_file_header)));
-	ge(Print_Section_Header(lv_section_header, lv_section_amount));
+	if (!Header_Read(lv_file, &lv_header_info)) {
+		Header_Print(&lv_header_info);
+	}
 	
 	END:
 	fclose(lv_file);
-	free(lv_dos_stub.String);
-	free(lv_section_header);
+	free(lv_header_info.dos_stub.String);
+	free(lv_header_info.section_header);
 	system("pause");
 	
 	return 0;

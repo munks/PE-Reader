@@ -2,36 +2,31 @@
 	#define _hread
 
 	int Read_DOS_Header (
-		FILE*, //Executable File (_In)
-		PIMAGE_DOS_HEADER //Pointer of Header (_Out)
+		FILE*, //Executable File		(_In)
+		PHEADER_SET //Pointer of Struct
+		//IMAGE_DOS_HEADER				(_Out)
 	);
 	int Read_DOS_Stub (
-		FILE*, //Executable File (_In)
-		PIMAGE_DOS_HEADER, //Information for NT Header Offset (_In)
-		PDOS_STUB //Pointer of Stub (_Out)
+		FILE*, //Executable File		(_In)
+		PHEADER_SET //Pointer of Struct
+		//IMAGE_DOS_HEADER				(_In)
+		//DOS_STUB						(_Out)
 	);
-	int Read_NT_Header_Signature (
-		FILE*, //Executable File (_In)
-		PIMAGE_DOS_HEADER, //Information for NT Header Offset (_In)
-		DWORD* //Pointer of Signature (_Out)
-	);
-	int Read_NT_Header_File (
-		FILE*, //Executable File (_In)
-		PIMAGE_DOS_HEADER, //Information for NT Header Offset (_In)
-		PIMAGE_FILE_HEADER //Pointer of Header (_Out)
-	);
-	int Read_NT_Header_Optional (
-		FILE*, //Executable File (_In)
-		PIMAGE_DOS_HEADER, //Information for NT Header Offset (_In)
-		PIMAGE_OPTIONAL_HEADER64, //Pointer of Header (_Out)
-		bool, //true: 32-bit, false: 64-bit (_In)
-		int* //Get Last File Pointer (_Out) 
+	int Read_NT_Header (
+		FILE*, //Executable File 		(_In)
+		PHEADER_SET //Pointer of Struct
+		//IMAGE_DOS_HEADER				(_In)
+		//DWORD							(_Out) //nt_header32.Signature
+		//IMAGE_FILE_HEADER				(_Out)
+		//IMAGE_OPTIONAL_HEADER64		(_Out)
+		//int							(_Out) //pe_header_end
 	);
 	int Read_Section_Header(
-		FILE*, //Executable File (_In)
-		PIMAGE_FILE_HEADER, //Information for Section Amount (_In)
-		PIMAGE_SECTION_HEADER*, //Pointer of Header (_Out)
-		int, //Section Header Offset (_In)
-		int* //Section Amount (_Out)
+		FILE*, //Executable File		(_In)
+		PHEADER_SET //Pointer of Struct
+		//IMAGE_FILE_HEADER				(_In)
+		//PIMAGE_SECTION_HEADER			(_Out)
+		//int							(_In) //pe_header_end
+		//int							(_Out) //section_amount
 	);
 #endif

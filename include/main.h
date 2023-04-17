@@ -1,7 +1,7 @@
 #ifndef _main
 	#define _main
 	
-	#define ge(b) if (b) { goto END; }
+	#define CheckNE0(b) if (b) { return 1; }
 	
 	int FileOpen (
 		wchar_t*, //File Path (_In)

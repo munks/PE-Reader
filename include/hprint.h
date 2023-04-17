@@ -2,27 +2,34 @@
 	#define _hprint
 
 	int Print_DOS_Header (
-		PIMAGE_DOS_HEADER //Pointer of Header (_In)
+		PHEADER_SET //Pointer of Struct
+		//IMAGE_DOS_HEADER			(_In)
 	);
 	int Print_DOS_Stub (
-		PDOS_STUB //Stub String (_In)
+		PHEADER_SET //Pointer of Struct
+		//DOS_STUB					(_In)
 	);
 	int Print_NT_Header_Signature (
-		DWORD //Signature (_In)
+		PHEADER_SET //Pointer of Struct
+		//DWORD						(_In)
 	);
 	int Print_NT_Header_File (
-		PIMAGE_FILE_HEADER //Pointer of Header (_In)
+		PHEADER_SET //Pointer of Struct
+		//IMAGE_FILE_HEADER			(_In)
 	);
 	int Print_NT_Header_Optional (
-		PIMAGE_OPTIONAL_HEADER64, //Pointer of Header (_In)
-		bool //true: 32-bit, false: 64-bit (_In) 
+		PHEADER_SET //Pointer of Struct
+		//bool,						(_In) //_32BitCheck(nt_header32.FileHeader)
+		//IMAGE_OPTIONAL_HEADER64,	(_In) //Depending on the result of bool, also used as 32-bit
 	);
 	int Print_NT_Header_Optional_DataDirectory (
-		PIMAGE_OPTIONAL_HEADER64, //Pointer of Header (_In)
-		bool //true: 32-bit, false: 64-bit (_In) 
+		PHEADER_SET //Pointer of Struct
+		//bool,						(_In) //_32BitCheck(nt_header32.FileHeader)
+		//IMAGE_OPTIONAL_HEADER64	(_In) //Depending on the result of bool, also used as 32-bit
 	);
 	int Print_Section_Header (
-		PIMAGE_SECTION_HEADER, //Pointer of Header (_In)
-		int //Header Amount (_In)
+		PHEADER_SET //Pointer of Struct
+		//PIMAGE_SECTION_HEADER		(_In)
+		//int						(_In) //section_amount
 	);
 #endif
