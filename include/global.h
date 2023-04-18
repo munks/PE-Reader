@@ -14,27 +14,51 @@
 		int Length;
 	} DOS_STUB, *PDOS_STUB;
 
-	typedef struct _HEADER_SET {
-		IMAGE_DOS_HEADER dos_header;
-		DOS_STUB dos_stub;
-		
-		union { //The size of the Signature and FileHeader is the same whether 32 bits or 64 bits.
-			IMAGE_NT_HEADERS32 nt_header32;
-			IMAGE_NT_HEADERS64 nt_header64;
-		};
-		
-		int pe_header_end;
-		
-		PIMAGE_SECTION_HEADER section_header = NULL;
-		int section_amount;
+	//class
+	typedef class _HEADER_SET {
+		private:
+			IMAGE_DOS_HEADER dos_header;
+			DOS_STUB dos_stub;
+			
+			union { //The size of the Signature and FileHeader is the same whether 32 bits or 64 bits.
+				IMAGE_NT_HEADERS32 nt_header32;
+				IMAGE_NT_HEADERS64 nt_header64;
+			};
+			
+			int pe_header_end;
+			
+			PIMAGE_SECTION_HEADER section_header;
+			int section_amount;
+		public:
+			_HEADER_SET () {
+				dos_header = {0, };
+				dos_stub = {0, };
+				nt_header32 = {0, };
+				pe_header_end = 0;
+				section_header = NULL;
+				section_amount = 0;
+			}
+			~_HEADER_SET () {
+				free(dos_stub.String);
+				free(section_header);
+			}
+			//hread.cpp
+			int Read_DOS_Header (FILE*);
+			int Read_DOS_Stub (FILE*);
+			int Read_NT_Header (FILE*);
+			int Read_Section_Header(FILE*);
+			//hprint.cpp
+			int Print_DOS_Header ();
+			int Print_DOS_Stub ();
+			int Print_NT_Header_Signature ();
+			int Print_NT_Header_File ();
+			int Print_NT_Header_Optional ();
+			int Print_NT_Header_Optional_DataDirectory ();
+			int Print_Section_Header ();
 	} HEADER_SET, *PHEADER_SET;
 	
 	//Custom Include
 	#include "main.h"
-	#include "hread.h"
-	#include "hread_internal.h"
-	#include "hprint.h"
-	#include "hprint_internal.h"
 	
 	//Definition
 	#define _32BitCheck(h) (h.Machine == IMAGE_FILE_MACHINE_I386)

@@ -1,7 +1,10 @@
 #include "global.h"
+#include "hprint_internal.h"
 
-int Print_DOS_Header (PHEADER_SET lp_headers) {
-	PIMAGE_DOS_HEADER lv_output = &lp_headers->dos_header;
+//Class Function Declarated in "global.h"
+
+int _HEADER_SET::Print_DOS_Header () {
+	PIMAGE_DOS_HEADER lv_output = &this->dos_header;
 	
 	puts("[IMAGE_DOS_HEADER]");
 	Print_DOS_Header_Internal(lv_output, e_magic, Print_Magic);
@@ -39,8 +42,8 @@ int Print_DOS_Header (PHEADER_SET lp_headers) {
 	return 0;
 }
 
-int Print_DOS_Stub (PHEADER_SET lp_headers) {
-	PDOS_STUB lv_output = &lp_headers->dos_stub;
+int _HEADER_SET::Print_DOS_Stub () {
+	PDOS_STUB lv_output = &this->dos_stub;
 	char lv_temp[8];
 	int lv_count = 0;
 	
@@ -60,8 +63,8 @@ int Print_DOS_Stub (PHEADER_SET lp_headers) {
 	return 0;
 }
 
-int Print_NT_Header_Signature (PHEADER_SET lp_headers) {
-	DWORD lv_output = lp_headers->nt_header32.Signature;
+int _HEADER_SET::Print_NT_Header_Signature () {
+	DWORD lv_output = this->nt_header32.Signature;
 	
 	puts("[IMAGE_NT_HEADERS].Signature");
 	printf("0x%08X (", lv_output);
@@ -74,8 +77,8 @@ int Print_NT_Header_Signature (PHEADER_SET lp_headers) {
 	return 0;
 }
 
-int Print_NT_Header_File (PHEADER_SET lp_headers) {
-	PIMAGE_FILE_HEADER lv_output = &lp_headers->nt_header32.FileHeader;
+int _HEADER_SET::Print_NT_Header_File () {
+	PIMAGE_FILE_HEADER lv_output = &this->nt_header32.FileHeader;
 	
 	puts("[IMAGE_NT_HEADERS].FileHeader");
 	Print_NT_Header_File_Internal(lv_output, Machine, Print_Machine);
@@ -90,9 +93,9 @@ int Print_NT_Header_File (PHEADER_SET lp_headers) {
 	return 0;
 }
 
-int Print_NT_Header_Optional (PHEADER_SET lp_headers) {
-	bool lv_is32 = _32BitCheck(lp_headers->nt_header32.FileHeader) ? true : false;
-	PIMAGE_OPTIONAL_HEADER64 lv_output = &lp_headers->nt_header64.OptionalHeader;
+int _HEADER_SET::Print_NT_Header_Optional () {
+	bool lv_is32 = _32BitCheck(this->nt_header32.FileHeader) ? true : false;
+	PIMAGE_OPTIONAL_HEADER64 lv_output = &this->nt_header64.OptionalHeader;
 	//32-bit and 64-bit address values are the same
 	
 	puts("[IMAGE_NT_HEADERS].OptionalHeader");
@@ -131,9 +134,9 @@ int Print_NT_Header_Optional (PHEADER_SET lp_headers) {
 	return 0;
 }
 
-int Print_NT_Header_Optional_DataDirectory (PHEADER_SET lp_headers) {
-	bool lv_is32 = _32BitCheck(lp_headers->nt_header32.FileHeader) ? true : false;
-	PIMAGE_OPTIONAL_HEADER64 lv_output = &lp_headers->nt_header64.OptionalHeader;
+int _HEADER_SET::Print_NT_Header_Optional_DataDirectory () {
+	bool lv_is32 = _32BitCheck(this->nt_header32.FileHeader) ? true : false;
+	PIMAGE_OPTIONAL_HEADER64 lv_output = &this->nt_header64.OptionalHeader;
 	//32-bit and 64-bit address values are the same
 	
 	puts("[IMAGE_NT_HEADERS].OptionalHeader.DataDirectory");
@@ -157,9 +160,9 @@ int Print_NT_Header_Optional_DataDirectory (PHEADER_SET lp_headers) {
 	return 0;
 }
 
-int Print_Section_Header (PHEADER_SET lp_headers) {
-	PIMAGE_SECTION_HEADER lv_output = lp_headers->section_header;
-	int lv_amount = lp_headers->section_amount;
+int _HEADER_SET::Print_Section_Header () {
+	PIMAGE_SECTION_HEADER lv_output = this->section_header;
+	int lv_amount = this->section_amount;
 	
 	puts("[IMAGE_SECTION_HEADER]");
 	for (int i = 0; i < lv_amount; i++) {

@@ -1,22 +1,22 @@
 #include "global.h"
 
 int Header_Read (FILE *lp_file, PHEADER_SET lp_set) {
-	CheckNE0(Read_DOS_Header(lp_file, lp_set));
-	CheckNE0(Read_DOS_Stub(lp_file, lp_set));
-	CheckNE0(Read_NT_Header(lp_file, lp_set));
-	CheckNE0(Read_Section_Header(lp_file, lp_set));
+	CheckNE0(lp_set->Read_DOS_Header(lp_file));
+	CheckNE0(lp_set->Read_DOS_Stub(lp_file));
+	CheckNE0(lp_set->Read_NT_Header(lp_file));
+	CheckNE0(lp_set->Read_Section_Header(lp_file));
 
 	return 0;
 }
 
 int Header_Print (PHEADER_SET lp_set) {
-	CheckNE0(Print_DOS_Header(lp_set));
-	CheckNE0(Print_DOS_Stub(lp_set));
-	CheckNE0(Print_NT_Header_Signature(lp_set));
-	CheckNE0(Print_NT_Header_File(lp_set));
-	CheckNE0(Print_NT_Header_Optional(lp_set));
-	CheckNE0(Print_NT_Header_Optional_DataDirectory(lp_set));
-	CheckNE0(Print_Section_Header(lp_set));
+	CheckNE0(lp_set->Print_DOS_Header());
+	CheckNE0(lp_set->Print_DOS_Stub());
+	CheckNE0(lp_set->Print_NT_Header_Signature());
+	CheckNE0(lp_set->Print_NT_Header_File());
+	CheckNE0(lp_set->Print_NT_Header_Optional());
+	CheckNE0(lp_set->Print_NT_Header_Optional_DataDirectory());
+	CheckNE0(lp_set->Print_Section_Header());
 
 	return 0;
 }
@@ -92,8 +92,6 @@ int wmain (int argc, wchar_t* argv[]) {
 	
 	END:
 	fclose(lv_file);
-	free(lv_header_info.dos_stub.String);
-	free(lv_header_info.section_header);
 	system("pause");
 	
 	return 0;

@@ -1,4 +1,5 @@
 #include "global.h"
+#include "hprint_internal.h"
 
 void Print_Magic (WORD lp_magic) {
 	printf(" (%c%c)", (BYTE)lp_magic, (BYTE)(lp_magic >> 8));
